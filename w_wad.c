@@ -26,17 +26,17 @@ static const char
 rcsid[] = "$Id: w_wad.c,v 1.5 1997/02/03 16:47:57 b1 Exp $";
 
 
-#ifdef NORMALUNIX
+//#ifdef NORMALUNIX
 #include <ctype.h>
-#include <sys/types.h>
+//#include <sys/types.h>
 #include <string.h>
 #include <unistd.h>
 #include <malloc.h>
 #include <fcntl.h>
-#include <sys/stat.h>
+//#include <sys/stat.h>
 #include <alloca.h>
 #define O_BINARY		0
-#endif
+//#endif
 
 #include "doomtype.h"
 #include "m_swap.h"
@@ -47,11 +47,6 @@ rcsid[] = "$Id: w_wad.c,v 1.5 1997/02/03 16:47:57 b1 Exp $";
 #pragma implementation "w_wad.h"
 #endif
 #include "w_wad.h"
-
-
-
-
-
 
 //
 // GLOBALS
@@ -66,10 +61,11 @@ void**			lumpcache;
 
 #define strcmpi	strcasecmp
 
-void strupr (char* s)
-{
-    while (*s) { *s = toupper(*s); s++; }
-}
+//Fights with built toolchain ctype.h
+//void strupr (char* s)
+//{
+//    while (*s) { *s = toupper(*s); s++; }
+//}
 
 int filelength (int handle) 
 { 
@@ -140,7 +136,7 @@ char*			reloadname;
 
 void W_AddFile (char *filename)
 {
-    wadinfo_t		header;
+    /*wadinfo_t		header;
     lumpinfo_t*		lump_p;
     unsigned		i;
     int			handle;
@@ -222,7 +218,7 @@ void W_AddFile (char *filename)
     }
 	
     if (reloadname)
-	close (handle);
+	close (handle);*/
 }
 
 
@@ -235,7 +231,7 @@ void W_AddFile (char *filename)
 //
 void W_Reload (void)
 {
-    wadinfo_t		header;
+   /* wadinfo_t		header;
     int			lumpcount;
     lumpinfo_t*		lump_p;
     unsigned		i;
@@ -272,9 +268,83 @@ void W_Reload (void)
     }
 	
     close (handle);
+    */
 }
 
+char* embed_wad_ptr;
 
+void W_InitEmbedded( void ) 
+{
+   int size;
+    
+    //Parse Embedded WAD 
+    //-----------------------------------------
+    wadinfo_t		header;
+    lumpinfo_t*		lump_p;
+    unsigned		i;
+    int			handle;
+    int			length;
+    int			startlump;
+    filelump_t*		fileinfo;
+    filelump_t		singleinfo;
+    int			storehandle;
+    
+   
+   // open all the files, load headers, and count lumps
+    numlumps = 0;
+
+    // will be realloced as lumps are added
+    lumpinfo = malloc(1);	
+    
+    // open the file and add to directory
+    //handle = wad descriptor
+
+    embed_wad_ptr = _binary_Doom1_WAD_start;
+
+    startlump = numlumps;
+	
+	//read (handle, &header, sizeof(header));
+	memcpy (embed_wad_ptr, &header, sizeof(header));
+	header.numlumps = LONG(header.numlumps);
+	header.infotableofs = LONG(header.infotableofs);
+	length = header.numlumps*sizeof(filelump_t);
+	fileinfo = alloca (length);
+	//lseek (handle, header.infotableofs, SEEK_SET);
+    embed_wad_ptr += header.infotableofs;
+    //read (handle, fileinfo, length);
+    memcpy (embed_wad_ptr, fileinfo, length);
+	
+    numlumps += header.numlumps;
+	
+    // Fill in lumpinfo
+    lumpinfo = realloc (lumpinfo, numlumps*sizeof(lumpinfo_t));
+
+    if (!lumpinfo)
+	I_Error ("Couldn't realloc lumpinfo");
+
+    lump_p = &lumpinfo[startlump];
+	
+    for (i=startlump ; i<numlumps ; i++,lump_p++, fileinfo++)
+    {
+	lump_p->handle = 0; //TODO this could break things...
+	lump_p->position = LONG(fileinfo->filepos);
+	lump_p->size = LONG(fileinfo->size);
+	strncpy (lump_p->name, fileinfo->name, 8);
+    }
+    
+    //-----------------------------------------
+    if (!numlumps)
+	I_Error ("W_InitFiles: no files found");
+    
+    // set up caching
+    size = numlumps * sizeof(*lumpcache);
+    lumpcache = malloc (size);
+    
+    if (!lumpcache)
+	I_Error ("Couldn't allocate lumpcache");
+
+    memset (lumpcache,0, size);
+}
 
 //
 // W_InitMultipleFiles
@@ -291,7 +361,7 @@ void W_Reload (void)
 //
 void W_InitMultipleFiles (char** filenames)
 {	
-    int		size;
+/*    int		size;
     
     // open all the files, load headers, and count lumps
     numlumps = 0;
@@ -313,6 +383,7 @@ void W_InitMultipleFiles (char** filenames)
 	I_Error ("Couldn't allocate lumpcache");
 
     memset (lumpcache,0, size);
+  */  
 }
 
 
@@ -324,11 +395,12 @@ void W_InitMultipleFiles (char** filenames)
 //
 void W_InitFile (char* filename)
 {
-    char*	names[2];
+    /*char*	names[2];
 
     names[0] = filename;
     names[1] = NULL;
     W_InitMultipleFiles (names);
+    */
 }
 
 
@@ -433,7 +505,7 @@ W_ReadLump
 ( int		lump,
   void*		dest )
 {
-    int		c;
+   /* int		c;
     lumpinfo_t*	l;
     int		handle;
 	
@@ -464,6 +536,7 @@ W_ReadLump
 	close (handle);
 		
     // ??? I_EndRead ();
+    // */
 }
 
 
@@ -484,11 +557,12 @@ W_CacheLumpNum
 		
     if (!lumpcache[lump])
     {
+	I_Error ("Got a Lump Miss, This shouldnt Happen! I Think....");
 	// read the lump in
 	
 	//printf ("cache miss on lump %i\n",lump);
-	ptr = Z_Malloc (W_LumpLength (lump), tag, &lumpcache[lump]);
-	W_ReadLump (lump, lumpcache[lump]);
+	//ptr = Z_Malloc (W_LumpLength (lump), tag, &lumpcache[lump]);
+	//W_ReadLump (lump, lumpcache[lump]);
     }
     else
     {
@@ -519,9 +593,10 @@ W_CacheLumpName
 int		info[2500][10];
 int		profilecount;
 
+//Not used thankfully, i think
 void W_Profile (void)
 {
-    int		i;
+    /*int		i;
     memblock_t*	block;
     void*	ptr;
     char	ch;
@@ -572,6 +647,8 @@ void W_Profile (void)
 	fprintf (f,"\n");
     }
     fclose (f);
+    */
+    
 }
 
 

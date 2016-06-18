@@ -542,8 +542,9 @@ void D_DoomMain (void)
     printf ("Z_Init: Init zone memory allocation daemon. \n");
     Z_Init ();
 
-    printf ("W_Init: Init WADfiles.\n");
-    W_InitMultipleFiles (wadfiles);
+    printf ("W_Init: Init Static WAD.\n");
+    W_InitEmbedded();
+    //W_InitMultipleFiles (wadfiles);
     
 
     printf ("M_Init: Init miscellaneous info.\n");

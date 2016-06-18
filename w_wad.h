@@ -66,7 +66,8 @@ extern	void**		lumpcache;
 extern	lumpinfo_t*	lumpinfo;
 extern	int		numlumps;
 
-void    W_InitMultipleFiles (char** filenames);
+//void    W_InitMultipleFiles (char** filenames);
+void    W_InitEmbedded (void);
 void    W_Reload (void);
 
 int	W_CheckNumForName (char* name);
@@ -78,8 +79,9 @@ void    W_ReadLump (int lump, void *dest);
 void*	W_CacheLumpNum (int lump, int tag);
 void*	W_CacheLumpName (char* name, int tag);
 
-
-
+//Embeded DOOM Wad pointer
+extern const char* _binary_Doom1_WAD_start;
+extern const char* _binary_Doom1_WAD_size;
 
 #endif
 //-----------------------------------------------------------------------------

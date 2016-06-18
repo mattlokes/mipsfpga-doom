@@ -16,7 +16,7 @@ OD=mips-mti-elf-objdump
 OC=mips-mti-elf-objcopy
 SZ=mips-mti-elf-size
 
-CFLAGS=  -O2 -g -EL -lc -c -msoft-float -march=m14kec -msoft-float -mno-dsp -mno-dspr2 -mno-dspr3 -Wall #-DNORMALUNIX -DLINUX
+CFLAGS=  -O2 -g -EL -lc -msoft-float -march=m14kec -msoft-float -mno-dsp -mno-dspr2 -mno-dspr3 -Wall #-DNORMALUNIX -DLINUX
 LDFLAGS_FPGA_RAM= -T FPGA_Ram.ld -EL -lc -march=m14kec -mno-mips16 -mno-micromips -mno-dsp -mno-dspr2 -mno-dspr3 -msoft-float -Wl,-Map=FPGA_Ram_map.txt
 
 #ASOURCES= \
@@ -27,7 +27,7 @@ O=build
 
 # not too sophisticated dependency
 OBJS=				\
-		$(O)/doomwad.o		\
+		$(O)/Doom1_WAD.o		\
 		$(O)/boot.o			\
 		$(O)/doomdef.o		\
 		$(O)/doomstat.o		\
@@ -109,8 +109,8 @@ $(O)/boot.o:
 	$(CC) $(CFLAGS) -c boot.S -o $(O)/boot.o
 
 #http://www.pc-freak.net/blog/doom-1-doom-2-doom-3-game-wad-files-for-download-playing-doom-on-debian-linux-via-freedoom-open-source-doom-engine/
-$(O)/doomwad.o:
-	$(LD) -r -b binary Doom1.WAD -o $(O)/doomwad.o
+$(O)/Doom1_WAD.o:
+	$(LD) -r -EL -b binary Doom1.WAD -o $(O)/Doom1_WAD.o
 
 $(O)/%.o:	%.c
 	$(CC) $(CFLAGS) -c $< -o $@
