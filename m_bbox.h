@@ -23,7 +23,11 @@
 #ifndef __M_BBOX__
 #define __M_BBOX__
 
-#include <values.h>
+//#include <values.h>
+//#include <limits.h>
+//#include <float.h>
+
+#include "doomtype.h"
 
 #include "m_fixed.h"
 

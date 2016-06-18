@@ -1,0 +1,12 @@
+- Fix WAD Init to use a static pointer (Rework w_wad.c & w_wad.h)
+- [DONE?] Remove all the argument parsing stuff and Parameter Checking.
+- Stop Sound being intialised/used
+- Remove Networking junk
+- Convert the timer to work with MIPS Timer
+- Investigate/Fix/Sort out any fopen calls, cant be doing that on embedded!
+- Skip Screen Fade Animation
+- Sort out Video Write/Framebuffer stuff
+- Sort out Controls
+- 
+
+- Profit

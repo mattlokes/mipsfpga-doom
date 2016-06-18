@@ -16,30 +16,19 @@ OD=mips-mti-elf-objdump
 OC=mips-mti-elf-objcopy
 SZ=mips-mti-elf-size
 
-CFLAGS=  -O2 -g -EL -lc -c -msoft-float -march=m14kec -msoft-float -mno-dsp -mno-dspr2 -mno-dspr3 -Wall -DNORMALUNIX -DLINUX
+CFLAGS=  -O2 -g -EL -lc -c -msoft-float -march=m14kec -msoft-float -mno-dsp -mno-dspr2 -mno-dspr3 -Wall #-DNORMALUNIX -DLINUX
 LDFLAGS_FPGA_RAM= -T FPGA_Ram.ld -EL -lc -march=m14kec -mno-mips16 -mno-micromips -mno-dsp -mno-dspr2 -mno-dspr3 -msoft-float -Wl,-Map=FPGA_Ram_map.txt
 
-#LDFLAGS=-L/usr/X11R6/lib
-#LIBS=-lXext -lX11 -lnsl -lm
-
-ASOURCES= \
-boot.S
-
-all: FPGA_RAM
-
-AOBJECTS=$(ASOURCES:.S=.o)
-
-.S.o:
-	$(CC) $(CFLAGS) $< -o $@
-
-
-
+#ASOURCES= \
+#boot.S
 
 # subdirectory for objects
 O=build
 
 # not too sophisticated dependency
 OBJS=				\
+		$(O)/doomwad.o		\
+		$(O)/boot.o			\
 		$(O)/doomdef.o		\
 		$(O)/doomstat.o		\
 		$(O)/dstrings.o		\
@@ -102,7 +91,7 @@ OBJS=				\
 		$(O)/info.o				\
 		$(O)/sounds.o
 
-all:	 $(O)/FPGA_RAM
+all:	$(O)/FPGA_RAM
 
 clean:
 	rm -f *.o *~ *.flc
@@ -115,6 +104,13 @@ $(O)/FPGA_RAM:	$(AOBJECTS) $(OBJS) $(O)/i_main.o
 	$(OD) -d -S -l $(O)/FPGA_Ram.elf > $(O)/FPGA_Ram_dasm.txt
 	$(OD) -d $(O)/FPGA_Ram.elf > $(O)/FPGA_Ram_modelsim.txt
 	$(OC) $(O)/FPGA_Ram.elf -O srec $(O)/FPGA_Ram.rec
+
+$(O)/boot.o:
+	$(CC) $(CFLAGS) -c boot.S -o $(O)/boot.o
+
+#http://www.pc-freak.net/blog/doom-1-doom-2-doom-3-game-wad-files-for-download-playing-doom-on-debian-linux-via-freedoom-open-source-doom-engine/
+$(O)/doomwad.o:
+	$(LD) -r -b binary Doom1.WAD -o $(O)/doomwad.o
 
 $(O)/%.o:	%.c
 	$(CC) $(CFLAGS) -c $< -o $@

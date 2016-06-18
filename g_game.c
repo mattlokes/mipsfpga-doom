@@ -1604,11 +1604,6 @@ void G_DoPlayDemo (void)
 	
     for (i=0 ; i<MAXPLAYERS ; i++) 
 	playeringame[i] = *demo_p++; 
-    if (playeringame[1]) 
-    { 
-	netgame = true; 
-	netdemo = true; 
-    }
 
     // don't spend a lot of time in loadlevel 
     precache = false;

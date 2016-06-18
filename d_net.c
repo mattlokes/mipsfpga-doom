@@ -163,25 +163,6 @@ HSendPacket
     doomcom->remotenode = node;
     doomcom->datalength = NetbufferSize ();
 	
-    if (debugfile)
-    {
-	int		i;
-	int		realretrans;
-	if (netbuffer->checksum & NCMD_RETRANSMIT)
-	    realretrans = ExpandTics (netbuffer->retransmitfrom);
-	else
-	    realretrans = -1;
-
-	fprintf (debugfile,"send (%i + %i, R %i) [%i] ",
-		 ExpandTics(netbuffer->starttic),
-		 netbuffer->numtics, realretrans, doomcom->datalength);
-	
-	for (i=0 ; i<doomcom->datalength ; i++)
-	    fprintf (debugfile,"%i ",((byte *)netbuffer)[i]);
-
-	fprintf (debugfile,"\n");
-    }
-
     I_NetCmd ();
 }
 
