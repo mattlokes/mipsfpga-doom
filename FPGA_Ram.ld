@@ -62,7 +62,7 @@ SECTIONS
   .text_init 0xbfc00000 :   /* Runs uncached (from 0x9fc00000) until I$ is initialized. */
   {
     _ftext_init = ABSOLUTE(.) ;	/* Start of init code. */
-    boot.o(.text)		/* Reset entry point   */
+    build/boot.o(.text)		/* Reset entry point   */
     . = ALIGN(8);
     _etext_init = ABSOLUTE(.);	/* End of init code. */
   } = 0
@@ -95,7 +95,7 @@ SECTIONS
     . = ALIGN(8);
     _edata_ram  = ABSOLUTE(.);	/* End of initialised data  */
   } 
-
+  
   /**** Uninitialised data ****/
 
   _fbss = .;			/* Start of uninitialised data	*/

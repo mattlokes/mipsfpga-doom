@@ -80,8 +80,8 @@ void*	W_CacheLumpNum (int lump, int tag);
 void*	W_CacheLumpName (char* name, int tag);
 
 //Embeded DOOM Wad pointer
-extern const char* _binary_Doom1_WAD_start;
-extern const char* _binary_Doom1_WAD_size;
+extern const char* _binary_Doom1_WAD_start  __attribute__ ((section (".data_wad")));
+extern const char* _binary_Doom1_WAD_size   __attribute__ ((section (".data_wad")));
 
 #endif
 //-----------------------------------------------------------------------------

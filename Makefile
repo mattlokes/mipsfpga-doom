@@ -17,7 +17,7 @@ OC=mips-mti-elf-objcopy
 SZ=mips-mti-elf-size
 
 CFLAGS=  -O2 -g -EL -lc -msoft-float -march=m14kec -msoft-float -mno-dsp -mno-dspr2 -mno-dspr3 -Wall #-DNORMALUNIX -DLINUX
-LDFLAGS_FPGA_RAM= -T FPGA_Ram.ld -EL -lc -march=m14kec -mno-mips16 -mno-micromips -mno-dsp -mno-dspr2 -mno-dspr3 -msoft-float -Wl,-Map=FPGA_Ram_map.txt
+LDFLAGS= -Wl,--gpsize=0 -T FPGA_Ram.ld -EL -lc -march=m14kec -mno-mips16 -mno-micromips -mno-dsp -mno-dspr2 -mno-dspr3 -msoft-float -Wl,-Map=FPGA_Ram_map.txt 
 
 #ASOURCES= \
 #boot.S
@@ -98,7 +98,7 @@ clean:
 	rm -f build/*
 
 $(O)/FPGA_RAM:	$(AOBJECTS) $(OBJS) $(O)/i_main.o
-	$(CC) $(CFLAGS) $(LDFLAGS) $(OBJS) $(O)/i_main.o \
+	$(CC) -v $(CFLAGS) $(LDFLAGS) $(OBJS) $(O)/i_main.o \
 	-o $(O)/FPGA_Ram.elf -lc
 	$(SZ) $(O)/FPGA_Ram.elf
 	$(OD) -d -S -l $(O)/FPGA_Ram.elf > $(O)/FPGA_Ram_dasm.txt
@@ -112,6 +112,7 @@ $(O)/boot.o:
 $(O)/Doom1_WAD.o:
 	$(LD) -r -EL -b binary Doom1.WAD -o $(O)/Doom1_WAD.o
 
+LDFLAGS= -Wl,--gpsize=0 -T FPGA_Ram.ld -EL -lc -march=m14kec -mno-mips16 -mno-micromips -mno-dsp -mno-dspr2 -mno-dspr3 -msoft-float -Wl,-Map=FPGA_Ram_map.txt 
 $(O)/%.o:	%.c
 	$(CC) $(CFLAGS) -c $< -o $@
 
