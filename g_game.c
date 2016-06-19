@@ -1200,7 +1200,9 @@ void G_LoadGame (char* name)
 
 void G_DoLoadGame (void) 
 { 
-    int		length; 
+    //Not supporting Loading of Games
+    
+    /*int		length; 
     int		i; 
     int		a,b,c; 
     char	vcheck[VERSIONSIZE]; 
@@ -1248,7 +1250,8 @@ void G_DoLoadGame (void)
 	R_ExecuteSetViewSize ();
     
     // draw the pattern into the back screen
-    R_FillBackScreen ();   
+    R_FillBackScreen ();
+    */
 } 
  
 
@@ -1309,7 +1312,7 @@ void G_DoSaveGame (void)
     length = save_p - savebuffer; 
     if (length > SAVEGAMESIZE) 
 	I_Error ("Savegame buffer overrun"); 
-    M_WriteFile (name, savebuffer, length); 
+    //M_WriteFile (name, savebuffer, length); 
     gameaction = ga_nothing; 
     savedescription[0] = 0;		 
 	 
@@ -1672,7 +1675,7 @@ boolean G_CheckDemoStatus (void)
     if (demorecording) 
     { 
 	*demo_p++ = DEMOMARKER; 
-	M_WriteFile (demoname, demobuffer, demo_p - demobuffer); 
+	//M_WriteFile (demoname, demobuffer, demo_p - demobuffer); 
 	Z_Free (demobuffer); 
 	demorecording = false; 
 	I_Error ("Demo %s recorded",demoname); 

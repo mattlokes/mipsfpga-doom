@@ -115,7 +115,7 @@ M_WriteFile
   void*		source,
   int		length )
 {
-    int		handle;
+    /*int		handle;
     int		count;
 	
     handle = open ( name, O_WRONLY | O_CREAT | O_TRUNC | O_BINARY, 0666);
@@ -127,7 +127,7 @@ M_WriteFile
     close (handle);
 	
     if (count < length)
-	return false;
+	return false;*/
 		
     return true;
 }
@@ -141,7 +141,7 @@ M_ReadFile
 ( char const*	name,
   byte**	buffer )
 {
-    int	handle, count, length;
+    /*int	handle, count, length;
     struct stat	fileinfo;
     byte		*buf;
 	
@@ -159,7 +159,8 @@ M_ReadFile
 	I_Error ("Couldn't read file %s", name);
 		
     *buffer = buf;
-    return length;
+    return length;*/
+    return 0;
 }
 
 
@@ -491,7 +492,7 @@ WritePCXfile
     
     // write output file
     length = pack - (byte *)pcx;
-    M_WriteFile (filename, pcx, length);
+    //M_WriteFile (filename, pcx, length);
 
     Z_Free (pcx);
 }
@@ -502,7 +503,9 @@ WritePCXfile
 //
 void M_ScreenShot (void)
 {
-    int		i;
+    //Dont be doing screenshots now, embedded woud have a field day!
+
+    /*int		i;
     byte*	linear;
     char	lbmname[12];
     
@@ -529,6 +532,7 @@ void M_ScreenShot (void)
 		  W_CacheLumpName ("PLAYPAL",PU_CACHE));
 	
     players[consoleplayer].message = "screen shot";
+    */
 }
 
 

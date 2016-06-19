@@ -110,10 +110,10 @@ const char snd_prefixen[]
 // These are not used, but should be (menu).
 // Maximum volume of a sound effect.
 // Internal default is max out of 0-15.
-//int 		snd_SfxVolume = 15;
+int 		snd_SfxVolume = 15;
 
 // Maximum volume of music. Useless so far.
-//int 		snd_MusicVolume = 15; 
+int 		snd_MusicVolume = 15; 
 
 
 

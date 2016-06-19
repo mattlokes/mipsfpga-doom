@@ -81,6 +81,10 @@ SECTIONS
     _etext_ram = ABSOLUTE(.);	/* End of code and read-only data   */
   } = 0
 
+  .init : {
+      KEEP (*(.init))
+  }
+
   /**** Initialised data ****/
 
   .data :
@@ -111,6 +115,8 @@ SECTIONS
     *(COMMON)
   }
 
+  . = ALIGN(8);
+  PROVIDE (end = .);
   _end = . ;		/* End of uninitialised data	    */
 
   .gptab.sdata : { *(.gptab.data) *(.gptab.sdata) }

@@ -29,7 +29,7 @@ rcsid[] = "$Id: m_bbox.c,v 1.1 1997/02/03 22:45:10 b1 Exp $";
 #include <string.h>
 
 #include <stdarg.h>
-#include <sys/time.h>
+#include <time.h>
 #include <unistd.h>
 
 #include "doomdef.h"
@@ -87,7 +87,9 @@ byte* I_ZoneBase (int*	size)
 //
 int  I_GetTime (void)
 {
-    struct timeval	tp;
+    // ML TODO
+
+    /*struct timeval	tp;
     struct timezone	tzp;
     int			newtics;
     static int		basetime=0;
@@ -96,7 +98,8 @@ int  I_GetTime (void)
     if (!basetime)
 	basetime = tp.tv_sec;
     newtics = (tp.tv_sec-basetime)*TICRATE + tp.tv_usec*TICRATE/1000000;
-    return newtics;
+    return newtics;*/
+    return 0;
 }
 
 
@@ -125,7 +128,9 @@ void I_Quit (void)
 
 void I_WaitVBL(int count)
 {
-#ifdef SGI
+// ML TODO
+
+/*#ifdef SGI
     sginap(1);                                           
 #else
 #ifdef SUN
@@ -133,7 +138,7 @@ void I_WaitVBL(int count)
 #else
     usleep (count * (1000000/70) );                                
 #endif
-#endif
+#endif*/
 }
 
 void I_BeginRead(void)

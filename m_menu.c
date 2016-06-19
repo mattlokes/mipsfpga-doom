@@ -517,21 +517,10 @@ void M_ReadSaveStrings(void)
 	
     for (i = 0;i < load_end;i++)
     {
-	if (M_CheckParm("-cdrom"))
-	    sprintf(name,"c:\\doomdata\\"SAVEGAMENAME"%d.dsg",i);
-	else
-	    sprintf(name,SAVEGAMENAME"%d.dsg",i);
-
-	handle = open (name, O_RDONLY | 0, 0666);
-	if (handle == -1)
-	{
-	    strcpy(&savegamestrings[i][0],EMPTYSTRING);
-	    LoadMenu[i].status = 0;
-	    continue;
-	}
-	count = read (handle, &savegamestrings[i], SAVESTRINGSIZE);
-	close (handle);
-	LoadMenu[i].status = 1;
+        //Populate Load Menu with empty strings dont support saving!!
+	   strcpy(&savegamestrings[i][0],EMPTYSTRING);
+	   LoadMenu[i].status = 0;
+	   continue;
     }
 }
 
@@ -579,12 +568,8 @@ void M_DrawSaveLoadBorder(int x,int y)
 void M_LoadSelect(int choice)
 {
     char    name[256];
-	
-    if (M_CheckParm("-cdrom"))
-	sprintf(name,"c:\\doomdata\\"SAVEGAMENAME"%d.dsg",choice);
-    else
 	sprintf(name,SAVEGAMENAME"%d.dsg",choice);
-    G_LoadGame (name);
+    //G_LoadGame (name); //Dont load Game as we dont have a FS!
     M_ClearMenus ();
 }
 

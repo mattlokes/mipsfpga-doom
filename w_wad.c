@@ -69,12 +69,14 @@ void**			lumpcache;
 
 int filelength (int handle) 
 { 
-    struct stat	fileinfo;
+    /*struct stat	fileinfo;
     
     if (fstat (handle,&fileinfo) == -1)
 	I_Error ("Error fstating");
 
     return fileinfo.st_size;
+    */
+    return 0;
 }
 
 
